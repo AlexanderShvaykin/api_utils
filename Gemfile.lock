@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    api_utils (0.1.0)
+    api_utils (0.1.1)
 
 GEM
   remote: https://rubygems.org/

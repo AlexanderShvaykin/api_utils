@@ -13,7 +13,8 @@ module ApiUtils
   # camelize all hash keys
   # @param [Hash] hash
   # @return [Hash]
-  def camelize_keys(hash) # rubocop:disable Metrics/MethodLength
+  # @param [Proc] handler Value will be result of handler
+  def camelize_keys(hash, handler = ->(val) { val })
     hash.each.with_object({}) do |(key, val), obj|
       obj[camelize(key.to_s)] =
         case val
@@ -21,10 +22,10 @@ module ApiUtils
           camelize_keys(val)
         when Array
           val.map do |item|
-            item.instance_of?(Hash) ? camelize_keys(item) : item
+            item.instance_of?(Hash) ? camelize_keys(item) : handler.call(item)
           end
         else
-          val
+          handler.call(val)
         end
     end
   end
